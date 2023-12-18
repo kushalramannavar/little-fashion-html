@@ -1,0 +1,24 @@
+pipeline {
+    agent { label 'projecta' }
+
+    stages {
+        stage('git clone') {
+            steps {
+                git branch: 'main', url: 'https://github.com/kushalramannavar/little-fashion-html.git'
+            }
+        }
+        stage('install httpd') {
+            steps {
+                sh 'yum install httpd -y'
+                sh 'systemctl start httpd'
+                sh 'systemctl enable httpd'
+            }
+        }
+        stage('copy project html path') {
+            steps { sh 'cd /var/jenkin/workspace/httpd '
+                   sh 'ls'
+                sh 'cp -r /var/jenkin/workspace/httpd/* /var/www/html/'
+            }
+        }
+    }
+}
