@@ -20,7 +20,7 @@ pipeline {
             }
         }
         stage('copy project html path') {
-            steps { sh 'cd /var/jenkin/workspace/httpd '
+            steps { sh 'cd /var/jenkin/workspace/httpd/ '
                    sh 'ls'
                 sh 'cp -r /var/jenkins/workspace/littlefashion-docker/* /var/www/html/'
             }
