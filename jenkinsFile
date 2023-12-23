@@ -2,6 +2,11 @@ pipeline {
     agent { label 'projecta' }
 
     stages {
+        stage('install git') {
+            steps {
+                 sh 'yum install git -y'
+            }
+        }
         stage('git clone') {
             steps {
                 git branch: 'main', url: 'https://github.com/kushalramannavar/little-fashion-html.git'
