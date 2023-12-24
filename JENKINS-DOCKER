@@ -1,0 +1,42 @@
+pipeline {
+    agent {label "projecta"}
+
+    stages {
+           stage('git clone') {
+            steps {
+                git branch: 'main', url: 'https://github.com/kushalramannavar/little-fashion-html.git'
+            }
+        }
+        stage('stop and delete the existing container if it is recreated') {
+            steps {
+                sh 'docker stop little_fashion_container || true '
+                sh 'docker rm little_fashion_container || true '
+            }
+        }
+        stage('docker build') {
+            steps {
+                sh 'docker build -t little-fashion-html-kush .'
+            }
+        }
+        stage('docker tag') {
+            steps {
+                sh 'docker tag little-fashion-html-kush kushalramannavar/little-fashion-html-kush '
+            }
+        }
+        stage('docker run') {
+            steps {
+                sh 'docker run -d --name little_fashion_container -p 88:80 kushalramannavar/little-fashion-html-kush '
+            }
+        }
+        stage('login to dockerhub') {
+            steps {
+                sh 'docker login -u kushalramannavar -p Dockerhub@070697 '
+            }
+        }
+        stage('docker push') {
+            steps {
+                sh 'docker push kushalramannavar/little-fashion-html-kush '
+            }
+        }
+    }
+}
